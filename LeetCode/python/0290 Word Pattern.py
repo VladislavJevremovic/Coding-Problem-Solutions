@@ -1,0 +1,30 @@
+# https://leetcode.com/problems/word-pattern/
+
+class Solution:
+    def wordPattern(self, pattern: str, s: str) -> bool:
+        map_char = {}
+        map_word = {}
+
+        words = s.split(' ')
+        if len(words) != len(pattern):
+            return False
+
+        for c, w in zip(pattern, words):
+            if c not in map_char:
+                if w in map_word:
+                    return False
+                else:
+                    map_char[c] = w
+                    map_word[w] = c
+            else:
+                if map_char[c] != w:
+                    return False
+        return True
+
+
+def test():
+    s = Solution()
+    assert s.wordPattern("abba", "dog cat cat dog") is True
+    assert s.wordPattern("abba", "dog cat cat fish") is False
+    assert s.wordPattern("aaaa", "dog cat cat dog") is False
+    assert s.wordPattern("abba", "dog dog dog dog") is False
