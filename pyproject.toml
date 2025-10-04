@@ -1,0 +1,23 @@
+[tool.pytest.ini_options]
+# Solution files are named like "0001 Two Sum.py" and expose a single
+# module-level `test()` function, so the default discovery globs don't match.
+testpaths = ["LeetCode/python", "HackerRank", "Codility"]
+python_files = ["*.py"]
+python_functions = ["test"]
+# importlib mode lets pytest import files whose names start with a digit or
+# contain spaces, and avoids module-name clashes between the many `Solution`
+# classes that share identical file-relative names.
+addopts = "--import-mode=importlib -q"
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+
+[tool.ruff.lint]
+# Real-problem rules plus import sorting. `UP` (e.g. List -> list) is omitted on
+# purpose: the existing files consistently use typing.List, so modernizing would
+# add churn and reduce uniformity rather than improve it.
+select = ["E", "F", "I", "W", "B", "SIM"]
+# Competitive-programming files use single-letter names like `A`, `I`, `l`
+# that match the problem statements; line length is handled by the formatter.
+ignore = ["E741", "E501"]

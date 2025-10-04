@@ -1,0 +1,38 @@
+# https://leetcode.com/problems/find-all-anagrams-in-a-string/
+
+from typing import List
+
+
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        """Slide a fixed-width window over s, maintaining a 26-letter count and
+        recording each index where it matches p's count."""
+        # Time: O(n)   Space: O(1)   (fixed 26-letter arrays)
+        ns, np = len(s), len(p)
+        if ns < np:
+            return []
+
+        p_count, s_count = [0] * 26, [0] * 26
+        # build reference array using string p
+        for ch in p:
+            p_count[ord(ch) - ord("a")] += 1
+
+        output = []
+        # sliding window on the string s
+        for i in range(ns):
+            # add one more letter on the right side of the window
+            s_count[ord(s[i]) - ord("a")] += 1
+            # remove one letter from the left side of the window
+            if i >= np:
+                s_count[ord(s[i - np]) - ord("a")] -= 1
+            # compare array in the sliding window with the reference array
+            if p_count == s_count:
+                output.append(i - np + 1)
+
+        return output
+
+
+def test():
+    s = Solution()
+    assert s.findAnagrams("cbaebabacd", "abc") == [0, 6]
+    assert s.findAnagrams("abab", "ab") == [0, 1, 2]
